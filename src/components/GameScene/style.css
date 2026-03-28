@@ -1,0 +1,74 @@
+.monsterColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.monsterColumn__word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: min(100vw - 40px, 920px);
+  text-align: center;
+}
+
+.gameScene__prompt {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.35;
+}
+
+.gameUI {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  width: min(980px, 100%);
+  z-index: 8;
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  justify-items: center;
+  padding: 14px 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(14px);
+}
+
+.gameOver {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.gameOver__title {
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.gameOver__subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.gameOver__btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.gameOver__btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
