@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import './style.css'
 
 /** Piscada rápida cobrindo a viewport inteira (efeito de magia ao acertar a palavra). */

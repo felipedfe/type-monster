@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useTransform } from 'motion/react'
 import { words } from '../../data/words'
 import mageImg from '../../assets/mage.png'
 import monster1 from '../../assets/monster-1.png'
@@ -174,13 +174,13 @@ export function GameScene() {
       <div className="gameStage" role="application" aria-label="Monster Type Game">
         <div className="gameStage__horizon" />
 
-        {!isGameOver ? (
+        {/* {!isGameOver ? ( */}
           <motion.div
             className="monsterColumn"
             style={{
               position: 'absolute',
-              left: '50%',
-              top: '10%',
+              left: '30%',
+              // top: '10%',
               x: '-50%',
               y: columnY,
               scale: columnScale,
@@ -192,7 +192,7 @@ export function GameScene() {
             </div>
             <Monster monsterImg={monsterImg} approach={approach} isDefeated={isCasting} />
           </motion.div>
-        ) : null}
+        {/* ) : null} */}
         <WizardHands wizardImg={mageImg} isCasting={isCasting} />
 
         {isGameOver ? (

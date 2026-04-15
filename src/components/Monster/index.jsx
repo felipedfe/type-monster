@@ -1,4 +1,4 @@
-import { motion, useMotionTemplate, useTransform } from 'framer-motion'
+import { motion, useMotionTemplate, useTransform } from 'motion/react'
 import './style.css'
 
 export function Monster({ monsterImg, approach, isDefeated }) {

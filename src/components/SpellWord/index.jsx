@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import './style.css'
 
 export function SpellWord({ word, typedCount, mistakeIndex }) {
