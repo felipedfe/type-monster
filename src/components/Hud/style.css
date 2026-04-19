@@ -1,14 +1,15 @@
 .hud {
-  position: absolute;
+  /* position: absolute;
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1100px, calc(100% - 40px));
+  width: min(1100px, calc(100% - 40px)); */
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
   color: rgba(255, 255, 255, 0.9);
+  border: solid 1px #fff;
 }
 
 .hud__left {

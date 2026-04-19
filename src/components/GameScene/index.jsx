@@ -1,10 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useMotionValue, useTransform } from 'motion/react'
 import { words } from '../../data/words'
-import mageImg from '../../assets/mage.png'
-import monster1 from '../../assets/monster-1.png'
-import monster2 from '../../assets/monster-2.png'
-import monster3 from '../../assets/monster-3.png'
 import { Hud } from '../Hud'
 import { Monster } from '../Monster'
 import { SpellFlash } from '../SpellFlash'
@@ -12,7 +8,6 @@ import { SpellWord } from '../SpellWord'
 import { WizardHands } from '../WizardHands'
 import './style.css'
 
-const MONSTER_IMGS = [monster1, monster2, monster3]
 
 function randomInt(maxExclusive) {
   if (maxExclusive <= 0) return 0
@@ -26,7 +21,7 @@ function randomInt(maxExclusive) {
 
 export function GameScene() {
   const [wordIndex, setWordIndex] = useState(() => randomInt(words.length))
-  const [monsterIndex, setMonsterIndex] = useState(() => randomInt(MONSTER_IMGS.length))
+  const [monsterIndex, setMonsterIndex] = useState(0)
   const [typedCount, setTypedCount] = useState(0)
   const [mistakeIndex, setMistakeIndex] = useState(-1)
   const [score, setScore] = useState(0)
@@ -34,7 +29,6 @@ export function GameScene() {
   const [state, setState] = useState('playing') // playing | casting | gameover
 
   const currentWord = useMemo(() => words[wordIndex] ?? words[0], [wordIndex])
-  const monsterImg = MONSTER_IMGS[monsterIndex]
 
   const approach = useMotionValue(0)
   const speedRef = useRef(0.09) // approach units per second
@@ -56,10 +50,7 @@ export function GameScene() {
 
   const resetRound = () => {
     setWordIndex(randomInt(words.length))
-    setMonsterIndex((prev) => {
-      const next = randomInt(MONSTER_IMGS.length - 1)
-      return next >= prev ? next + 1 : next
-    })
+    setMonsterIndex(0)
     setTypedCount(0)
     setMistakeIndex(-1)
     approach.set(0)
@@ -169,31 +160,31 @@ export function GameScene() {
       <div className="gameBg" />
       <SpellFlash visible={isCasting} />
 
-      <Hud score={score} round={round} state={state} />
-
       <div className="gameStage" role="application" aria-label="Monster Type Game">
+        <Hud score={score} round={round} state={state} />
         <div className="gameStage__horizon" />
 
         {/* {!isGameOver ? ( */}
-          <motion.div
-            className="monsterColumn"
-            style={{
-              position: 'absolute',
-              left: '30%',
-              // top: '10%',
-              x: '-50%',
-              y: columnY,
-              scale: columnScale,
-            }}
-          >
-            <div className="monsterColumn__word">
-              {/* <p className="gameScene__prompt">Digite a palavra mágica antes do monstro chegar.</p> */}
-              <SpellWord word={currentWord} typedCount={typedCount} mistakeIndex={mistakeIndex} />
-            </div>
-            <Monster monsterImg={monsterImg} approach={approach} isDefeated={isCasting} />
-          </motion.div>
+        <motion.div
+          className="monsterColumn"
+          style={{
+            position: 'absolute',
+            left: '50%',
+            // top: '10%',
+            x: '-50%',
+            y: columnY,
+            scale: columnScale,
+          }}
+        >
+          <div className="monsterColumn__word">
+            {/* <p className="gameScene__prompt">Digite a palavra mágica antes do monstro chegar.</p> */}
+            <SpellWord word={currentWord} typedCount={typedCount} mistakeIndex={mistakeIndex} />
+          </div>
+          <Monster monsterIndex={monsterIndex} isDefeated={isCasting} />
+        </motion.div>
         {/* ) : null} */}
-        <WizardHands wizardImg={mageImg} isCasting={isCasting} />
+
+        <WizardHands isCasting={isCasting} />
 
         {isGameOver ? (
           <div className="gameUI">

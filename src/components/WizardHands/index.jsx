@@ -1,27 +1,19 @@
 import { motion } from 'motion/react'
+import bracoImg from '../../assets/wizard-bw/parts/braco.png'
+import maoVarinhaImg from '../../assets/wizard-bw/parts/mao-e-varinha.png'
 import './style.css'
 
-export function WizardHands({ wizardImg, isCasting }) {
+export function WizardHands({ isCasting }) {
   return (
-    <div className="wizard" aria-label="mago">
-      <motion.img
-        className="wizard__img"
-        src={wizardImg}
-        alt="Mago"
-        draggable={false}
-        initial={false}
-        animate={isCasting ? { y: [0, -6, 0], rotate: [0, -2, 0] } : { y: 0, rotate: 0 }}
-        transition={{ duration: 0.25 }}
-      />
-      <motion.div
-        className="wizard__handGlow"
-        aria-hidden
-        initial={false}
-        animate={
-          isCasting ? { opacity: [0.2, 0.9, 0.2], scale: [1, 1.1, 1] } : { opacity: 0.2, scale: 1 }
-        }
-        transition={{ duration: 0.35 }}
-      />
-    </div>
+    <motion.div
+      className="wizard"
+      aria-label="mago"
+      initial={false}
+      animate={isCasting ? { y: [0, -6, 0], rotate: [0, -2, 0] } : { y: 0, rotate: 0 }}
+      transition={{ duration: 0.25 }}
+    >
+      <img className="wizard__braco" src={bracoImg} alt="" draggable={false} />
+      <img className="wizard__mao-varinha" src={maoVarinhaImg} alt="" draggable={false} />
+    </motion.div>
   )
 }

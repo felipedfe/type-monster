@@ -1,11 +1,11 @@
-import { motion, useMotionTemplate, useTransform } from 'motion/react'
+import { motion } from 'motion/react'
+import { Monster1 } from './Monster1'
 import './style.css'
 
-export function Monster({ monsterImg, approach, isDefeated }) {
-  const blur = useTransform(approach, [0, 1], [2, 0])
-  const shadow = useTransform(approach, [0, 1], [0.15, 0.5])
-  const filter = useMotionTemplate`blur(${blur}px)`
-  const boxShadow = useMotionTemplate`0 18px 60px rgba(0,0,0,${shadow})`
+const MONSTERS = [Monster1]
+
+export function Monster({ monsterIndex, isDefeated }) {
+  const MonsterComponent = MONSTERS[monsterIndex % MONSTERS.length]
 
   return (
     <motion.div
@@ -14,16 +14,7 @@ export function Monster({ monsterImg, approach, isDefeated }) {
       animate={isDefeated ? { opacity: 0, scale: 1.7 } : { opacity: 1, scale: 1 }}
       transition={{ duration: 0.22 }}
     >
-      <motion.img
-        className="monster__img"
-        src={monsterImg}
-        alt="Monstro"
-        draggable={false}
-        style={{
-          filter,
-          boxShadow,
-        }}
-      />
+      <MonsterComponent />
     </motion.div>
   )
 }
