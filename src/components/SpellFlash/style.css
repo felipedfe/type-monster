@@ -4,12 +4,6 @@
   inset: 0;
   z-index: 80;
   pointer-events: none;
-  background: radial-gradient(
-    circle at 50% 42%,
-    rgba(255, 255, 255, 0.92) 0%,
-    rgba(230, 220, 255, 0.55) 35%,
-    rgba(255, 255, 255, 0.2) 65%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: var(--orange);
   mix-blend-mode: screen;
 }

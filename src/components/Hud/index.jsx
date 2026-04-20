@@ -13,9 +13,9 @@ export function Hud({ score, round, state }) {
           <div className="hud__value">{round}</div>
         </div>
       </div>
-      <div className="hud__right">
+      {/* <div className="hud__right">
         <div className={`hud__badge hud__badge--${state}`}>{state}</div>
-      </div>
+      </div> */}
     </div>
   )
 }

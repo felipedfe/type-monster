@@ -1,6 +1,6 @@
 /* Altere --monster-size para escalar o monstro inteiro */
 .monster1 {
-  --monster-size: 330px;
+  --monster-size: 380px;
   position: relative;
   width: var(--monster-size);
   height: var(--monster-size);
@@ -26,22 +26,22 @@
 
 .monster1__chifre--left {
   width: 25%;
-  left: 8.5%;
-  top: 10%;
+  left: 8%;
+  top: 12%;
 }
 
 .monster1__chifre--center {
   width: 25%;
   left: 35%;
-  top: 8%;
-  transform: rotate(45deg);
+  top: 11%;
+  /* rotate: 45deg;   */
+  /* transform-origin: center bottom; */
 }
 
 .monster1__chifre--right {
   width: 25%;
   left: 60%;
-  top: 10%;
-  transform: scaleX(-1);
+  top: 13%;
 }
 
 .monster1__olhos {

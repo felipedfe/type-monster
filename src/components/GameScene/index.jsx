@@ -31,7 +31,15 @@ export function GameScene() {
   const currentWord = useMemo(() => words[wordIndex] ?? words[0], [wordIndex])
 
   const approach = useMotionValue(0)
-  const speedRef = useRef(0.09) // approach units per second
+  // --- dificuldade ---
+  // SPEED_INITIAL: velocidade da rodada 1
+  // SPEED_INCREMENT: quanto aumenta por rodada
+  // SPEED_MAX: teto
+  const SPEED_INITIAL = 0.09
+  const SPEED_INCREMENT = 0.012
+  const SPEED_MAX = 0.32
+  // --------------------
+  const speedRef = useRef(SPEED_INITIAL)
   const rafRef = useRef(0)
   const lastTRef = useRef(0)
   const isMountedRef = useRef(false)
@@ -112,6 +120,7 @@ export function GameScene() {
     window.clearTimeout(castTimeoutRef.current)
     castTimeoutRef.current = window.setTimeout(() => {
       if (!isMountedRef.current) return
+      speedRef.current = Math.min(speedRef.current + SPEED_INCREMENT, SPEED_MAX)
       setRound((r) => r + 1)
       resetRound()
       setState('playing')
@@ -152,8 +161,8 @@ export function GameScene() {
   const isCasting = state === 'casting'
   const isGameOver = state === 'gameover'
 
-  const columnY = useTransform(approach, [0, 1], [40, 180])
-  const columnScale = useTransform(approach, [0, 1], [0.65, 1.55])
+  const columnY = useTransform(approach, [0, 1], [40, 140])
+  const columnScale = useTransform(approach, [0, 1], [0.85, 1.80])
 
   return (
     <div className="gameRoot">
@@ -170,7 +179,7 @@ export function GameScene() {
           style={{
             position: 'absolute',
             left: '50%',
-            // top: '10%',
+            top: '5%',
             x: '-50%',
             y: columnY,
             scale: columnScale,
@@ -180,9 +189,9 @@ export function GameScene() {
             {/* <p className="gameScene__prompt">Digite a palavra mágica antes do monstro chegar.</p> */}
             <SpellWord word={currentWord} typedCount={typedCount} mistakeIndex={mistakeIndex} />
           </div>
-          <Monster monsterIndex={monsterIndex} isDefeated={isCasting} />
+          <Monster key={round} monsterIndex={monsterIndex} isDefeated={isCasting} />
         </motion.div>
-        {/* ) : null} */}
+         {/* ) : null}  */}
 
         <WizardHands isCasting={isCasting} />
 
@@ -190,8 +199,8 @@ export function GameScene() {
           <div className="gameUI">
             <div className="gameOver">
               <div className="gameOver__title">Game Over</div>
-              <div className="gameOver__subtitle">Pressione Enter para recomeçar</div>
-              <button
+              <div className="gameOver__subtitle">Press Enter</div>
+              {/* <button
                 className="gameOver__btn"
                 onClick={() => {
                   speedRef.current = 0.09
@@ -202,7 +211,7 @@ export function GameScene() {
                 }}
               >
                 Recomeçar
-              </button>
+              </button> */}
             </div>
           </div>
         ) : null}

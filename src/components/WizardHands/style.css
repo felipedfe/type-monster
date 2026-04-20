@@ -1,12 +1,11 @@
 /* Altere --wizard-size para escalar o mago inteiro */
 .wizard {
   --wizard-size: 260px;
-  --wizard-rotate: -3deg;
+  --wizard-rotate: -5deg;
 
   position: absolute;
   left: 50%;
-  bottom: 0;
-  transform: translateX(-90%) !important;
+  bottom: 2px;
   z-index: 6;
   width: var(--wizard-size);
   height: var(--wizard-size);
@@ -15,6 +14,7 @@
   /* overflow-y: hidden; */
   /* overflow-x: visible; */
   /* background-color: aqua; */
+  /* border-bottom: 1px solid #fff; */
 }
 
 .wizard img {
@@ -34,7 +34,7 @@
 .wizard__mao-varinha {
   width: 42%;
   left: 72%;
-  top: 3%;
+  top: 5%;
   z-index: 1;
   transform: rotate(var(--wizard-rotate));
 }

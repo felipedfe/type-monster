@@ -26,3 +26,7 @@ export const words = [
   "wraith",
   "demon",
 ]
+
+// export const words = [
+//   "q",
+// ]
