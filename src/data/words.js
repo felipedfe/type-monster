@@ -1,39 +1,8 @@
 // export const words = [
-//   "banana",
-//   "galaxy",
-//   "keyboard",
-//   "fantasy",
-//   "element",
-//   "control",
-//   "escape",
-//   "digital",
-//   "network",
-//   "trigger",
-//   "wizard",
-//   "shadow",
-//   "flame",
-//   "crystal",
-//   "thunder",
-//   "dagger",
-//   "inferno",
-//   "blizzard",
-//   "tornado",
-//   "eclipse",
-//   "serpent",
-//   "crypt",
-//   "raven",
-//   "vampire",
-//   "wraith",
-//   "demon",
-// ]
-
-// export const words = [
 //   "q",
 // ]
 
-
 export const words = [
-  // 
   "banana",
   // "toaster",
   "potato",
@@ -41,8 +10,7 @@ export const words = [
   "shampoo",
   "marshmallow",
   "flipflop",
-
-  // fantasia
+  "fantasia",
   "inferno",
   // "eclipse",
   "wizard",
@@ -60,8 +28,6 @@ export const words = [
   // "demon",
   // "arcane",
   // "phantom",
-
-  // tech
   "control",
   "escape",
   // "network",
@@ -72,8 +38,6 @@ export const words = [
   "latency",
   "grow",
   // "firewall",
-
-  // magia + tech
   // "glitch",
   // "hexcode",
   "neon",
@@ -81,7 +45,6 @@ export const words = [
   // "quantum",
   "void",
   // "pulse",
-
   // "neurocircuit",
   // "spellcaster",
   // "configuration",  

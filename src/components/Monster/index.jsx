@@ -4,8 +4,8 @@ import { Monster2 } from './Monster2'
 import { Monster3 } from './Monster3'
 import './style.css'
 
-// const MONSTERS = [Monster1, Monster2, Monster3]
-const MONSTERS = [Monster2]
+const MONSTERS = [Monster1, Monster2, Monster3]
+// const MONSTERS = [Monster2]
 export const MONSTER_COUNT = MONSTERS.length
 
 export function Monster({ monsterIndex, isDefeated }) {
