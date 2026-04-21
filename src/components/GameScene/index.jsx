@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { motion, useMotionValue, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue, useTransform } from 'motion/react'
 import { words } from '../../data/words'
 import { Hud } from '../Hud'
-import { Monster } from '../Monster'
+import { Monster, MONSTER_COUNT } from '../Monster'
 import { SpellFlash } from '../SpellFlash'
 import { SpellWord } from '../SpellWord'
 import { WizardHands } from '../WizardHands'
@@ -57,8 +57,12 @@ export function GameScene() {
   }, [mistakeIndex])
 
   const resetRound = () => {
-    setWordIndex(randomInt(words.length))
-    setMonsterIndex(0)
+    setWordIndex(prev => {
+      // sorteia entre todas as palavras exceto a atual, evitando repetição imediata
+      const nextCandidate = randomInt(words.length - 1)
+      return nextCandidate >= prev ? nextCandidate + 1 : nextCandidate
+    })
+    setMonsterIndex(prev => (prev + 1) % MONSTER_COUNT)
     setTypedCount(0)
     setMistakeIndex(-1)
     approach.set(0)
@@ -111,7 +115,7 @@ export function GameScene() {
     if (typedCount !== currentWord.length) return
 
     setState('casting')
-    setScore((s) => s + 1)
+    setScore((s) => s + 160)
   }, [typedCount, currentWord, state])
 
   useEffect(() => {
@@ -161,7 +165,7 @@ export function GameScene() {
   const isCasting = state === 'casting'
   const isGameOver = state === 'gameover'
 
-  const columnY = useTransform(approach, [0, 1], [40, 140])
+  const columnY = useTransform(approach, [0, 1], [40, 180])
   const columnScale = useTransform(approach, [0, 1], [0.85, 1.80])
 
   return (
@@ -170,10 +174,10 @@ export function GameScene() {
       <SpellFlash visible={isCasting} />
 
       <div className="gameStage" role="application" aria-label="Monster Type Game">
-        <Hud score={score} round={round} state={state} />
+        <Hud round={round} score={score} approach={approach} />
         <div className="gameStage__horizon" />
 
-        {/* {!isGameOver ? ( */}
+        {!isGameOver ? ( 
         <motion.div
           className="monsterColumn"
           style={{
@@ -191,30 +195,36 @@ export function GameScene() {
           </div>
           <Monster key={round} monsterIndex={monsterIndex} isDefeated={isCasting} />
         </motion.div>
-         {/* ) : null}  */}
+          ) : null}
 
         <WizardHands isCasting={isCasting} />
 
-        {isGameOver ? (
-          <div className="gameUI">
-            <div className="gameOver">
-              <div className="gameOver__title">Game Over</div>
-              <div className="gameOver__subtitle">Press Enter</div>
-              {/* <button
-                className="gameOver__btn"
-                onClick={() => {
-                  speedRef.current = 0.09
-                  setScore(0)
-                  setRound(1)
-                  setState('playing')
-                  resetRound()
-                }}
-              >
-                Recomeçar
-              </button> */}
-            </div>
-          </div>
-        ) : null}
+        <AnimatePresence>
+          {isGameOver && (
+            <motion.div
+              className="gameUI"
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              // exit={{ opacity: 0, scale: 0.88 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="gameOver">
+                <div className="gameOver__title">Game Over</div>
+                <div className="gameOver__stats">
+                  <div className="gameOver__stat">
+                    <div className="gameOver__statLabel">Round</div>
+                    <div className="gameOver__statValue">{round}</div>
+                  </div>
+                  <div className="gameOver__stat">
+                    <div className="gameOver__statLabel">Score</div>
+                    <div className="gameOver__statValue">{score.toLocaleString('pt-BR')}</div>
+                  </div>
+                </div>
+                <div className="gameOver__subtitle">Press Enter to restart</div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )
