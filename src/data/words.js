@@ -101,4 +101,10 @@ export const words = [
   "overload",
   "null",
   "checklist",
+  "privilege",
+  "pragmatic",
+  "stoic",
+  "panda",
+  "exodus",
+  "stargate",
 ]
