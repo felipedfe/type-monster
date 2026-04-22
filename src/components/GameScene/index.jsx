@@ -9,6 +9,26 @@ import { WizardHands } from '../WizardHands'
 import './style.css'
 
 
+const GAME_OVER_WHISPERS = [
+  "you almost had it (probably)",
+  "that was… a valid attempt",
+  // "failure is just a pause with consequences",
+  "too slow.",
+  "please try again during business hours",
+  // "great job staying calm under artificial pressure",
+  "stay calm under artificial pressure",
+  // "it's over. you can now relax in a productive way",
+  "relax in a productive way",
+  "you were doing great until you weren’t",
+  "no autocomplete can help here",
+  "nothing is wrong. except the result",
+  "try again. it'll be worse",
+  "not this time.",
+  "focus lost.",
+  "game over? stay productive",
+  "continue?",
+]
+
 function randomInt(maxExclusive) {
   if (maxExclusive <= 0) return 0
   if (globalThis.crypto?.getRandomValues) {
@@ -27,6 +47,7 @@ export function GameScene() {
   const [score, setScore] = useState(0)
   const [round, setRound] = useState(1)
   const [state, setState] = useState('playing') // playing | casting | gameover
+  const [whisper, setWhisper] = useState('')
 
   const currentWord = useMemo(() => words[wordIndex] ?? words[0], [wordIndex])
 
@@ -149,6 +170,7 @@ export function GameScene() {
 
         if (next >= 1) {
           setState('gameover')
+          setWhisper(GAME_OVER_WHISPERS[randomInt(GAME_OVER_WHISPERS.length)])
         }
       }
 
@@ -177,27 +199,29 @@ export function GameScene() {
         <Hud round={round} score={score} approach={approach} />
         <div className="gameStage__horizon" />
 
-        {!isGameOver ? ( 
-        <motion.div
-          className="monsterColumn"
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '5%',
-            x: '-50%',
-            y: columnY,
-            scale: columnScale,
-          }}
-        >
-          <div className="monsterColumn__word">
-            {/* <p className="gameScene__prompt">Digite a palavra mágica antes do monstro chegar.</p> */}
-            <SpellWord word={currentWord} typedCount={typedCount} mistakeIndex={mistakeIndex} />
-          </div>
-          <Monster key={round} monsterIndex={monsterIndex} isDefeated={isCasting} />
-        </motion.div>
-          ) : null}
+        {!isGameOver ? (
+          <>
+            <motion.div
+              className="monsterColumn"
+              style={{
+                position: 'absolute',
+                left: '50%',
+                top: '5%',
+                x: '-50%',
+                y: columnY,
+                scale: columnScale,
+              }}
+            >
+              <div className="monsterColumn__word">
+                {/* <p className="gameScene__prompt">Digite a palavra mágica antes do monstro chegar.</p> */}
+                <SpellWord word={currentWord} typedCount={typedCount} mistakeIndex={mistakeIndex} />
+              </div>
+              <Monster key={round} monsterIndex={monsterIndex} isDefeated={isCasting} />
+            </motion.div>
+            <WizardHands isCasting={isCasting} />
+          </>
+        ) : null}
 
-        <WizardHands isCasting={isCasting} />
 
         <AnimatePresence>
           {isGameOver && (
@@ -221,6 +245,14 @@ export function GameScene() {
                   </div>
                 </div>
                 <div className="gameOver__subtitle">Press Enter to restart</div>
+                <motion.div
+                  className="gameOver__whisper"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 1.4, ease: 'easeIn' }}
+                >
+                  {whisper}
+                </motion.div>
               </div>
             </motion.div>
           )}

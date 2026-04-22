@@ -107,4 +107,6 @@ export const words = [
   "panda",
   "exodus",
   "stargate",
+  "wetware",
+  "babilonia",
 ]
