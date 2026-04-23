@@ -51,6 +51,8 @@ export const words = [
   "ghost",
   // "quantum",
   "void",
+  "task",
+  "compliance",
   // "pulse",
   // "neurocircuit",
   // "spellcaster",

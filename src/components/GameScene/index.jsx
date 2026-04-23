@@ -6,7 +6,8 @@ import { Monster, MONSTER_COUNT } from '../Monster'
 import { SpellFlash } from '../SpellFlash'
 import { SpellWord } from '../SpellWord'
 import { WizardHands } from '../WizardHands'
-import './style.css'
+import bgVideo from '../../assets/fundo5-low.mp4'
+import './style.css' 
 
 
 const GAME_OVER_WHISPERS = [
@@ -18,14 +19,14 @@ const GAME_OVER_WHISPERS = [
   // "great job staying calm under artificial pressure",
   "stay calm under artificial pressure",
   // "it's over. you can now relax in a productive way",
-  "relax in a productive way",
+  // "relax in a productive way",10564454
   "you were doing great until you weren’t",
   "no autocomplete can help here",
   "nothing is wrong. except the result",
   "try again. it'll be worse",
   "not this time.",
   "focus lost.",
-  "game over? stay productive",
+  // "stay productive",
   "continue?",
 ]
 
@@ -192,10 +193,10 @@ export function GameScene() {
 
   return (
     <div className="gameRoot">
-      <div className="gameBg" />
       <SpellFlash visible={isCasting} />
 
       <div className="gameStage" role="application" aria-label="Monster Type Game">
+        {!isGameOver && <video className="gameBg" src={bgVideo} autoPlay loop muted playsInline />}
         <Hud round={round} score={score} approach={approach} />
         <div className="gameStage__horizon" />
 
