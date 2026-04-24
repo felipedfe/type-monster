@@ -8,11 +8,13 @@ import { SpellWord } from '../SpellWord'
 import { WizardHands } from '../WizardHands'
 import bgVideo from '../../assets/fundo5-low.mp4'
 import smileImg from '../../assets/smile.png'
+import pandaImg from '../../assets/panda.png'
 import { WordFlash } from '../WordFlash'
 import './style.css'
 
 const WORD_FLASHES = {
   smile: smileImg,
+  panda: pandaImg,
 }
 
 
