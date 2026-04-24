@@ -7,7 +7,13 @@ import { SpellFlash } from '../SpellFlash'
 import { SpellWord } from '../SpellWord'
 import { WizardHands } from '../WizardHands'
 import bgVideo from '../../assets/fundo5-low.mp4'
-import './style.css' 
+import smileImg from '../../assets/smile.png'
+import { WordFlash } from '../WordFlash'
+import './style.css'
+
+const WORD_FLASHES = {
+  smile: smileImg,
+}
 
 
 const GAME_OVER_WHISPERS = [
@@ -49,6 +55,7 @@ export function GameScene() {
   const [round, setRound] = useState(1)
   const [state, setState] = useState('playing') // playing | casting | gameover
   const [whisper, setWhisper] = useState('')
+  const [wordFlashSrc, setWordFlashSrc] = useState(null)
 
   const currentWord = useMemo(() => words[wordIndex] ?? words[0], [wordIndex])
 
@@ -138,6 +145,11 @@ export function GameScene() {
 
     setState('casting')
     setScore((s) => s + 160)
+    const flashSrc = WORD_FLASHES[currentWord]
+    if (flashSrc) {
+      setWordFlashSrc(flashSrc)
+      setTimeout(() => setWordFlashSrc(null), 300)
+    }
   }, [typedCount, currentWord, state])
 
   useEffect(() => {
@@ -194,6 +206,7 @@ export function GameScene() {
   return (
     <div className="gameRoot">
       <SpellFlash visible={isCasting} />
+      <WordFlash src={wordFlashSrc} />
 
       <div className="gameStage" role="application" aria-label="Monster Type Game">
         {!isGameOver && <video className="gameBg" src={bgVideo} autoPlay loop muted playsInline />}

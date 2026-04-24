@@ -2,6 +2,13 @@
 //   "q",
 // ]
 
+// export const words = [
+//   "q",
+//   "smile",
+//   "w",
+//   "a",
+// ]
+
 export const words = [
   "banana",
   // "toaster",
@@ -13,7 +20,7 @@ export const words = [
   "imagine",
   "inferno",
   // "eclipse",
-  "wizard",
+  // "wizard",
   "codex",
   // "cast",
   "soul",
@@ -43,6 +50,7 @@ export const words = [
   "checklist",
   "therapy",
   "smile",
+  "smile",
   // "grow",
   // "firewall",
   // "glitch",
@@ -66,7 +74,7 @@ export const words = [
   "sprint",
   // "metaverse",
   // "biometric",
-  // "productivity",
+  "productivity",
   "mindless",
   "deadline",
   // "corporate",
@@ -78,7 +86,7 @@ export const words = [
   "bigdata",
   "copilot",
   "monetize",
-  // "procrastinate",
+  "procrastinate",
   "dopamine",
   // "multitask",
   "human",
