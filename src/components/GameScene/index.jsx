@@ -38,6 +38,9 @@ const GAME_OVER_WHISPERS = [
   "continue?",
 ]
 
+// COMBO_SIZE: quantas palavras limpas seguidas disparam o combo
+const COMBO_SIZE = 5
+
 function randomInt(maxExclusive) {
   if (maxExclusive <= 0) return 0
   if (globalThis.crypto?.getRandomValues) {
@@ -58,6 +61,9 @@ export function GameScene() {
   const [state, setState] = useState('playing') // playing | casting | gameover
   const [whisper, setWhisper] = useState('')
   const [wordFlashSrc, setWordFlashSrc] = useState(null)
+  const [comboFlash, setComboFlash] = useState(false)
+  const comboRef = useRef(0)
+  const hadMistakeThisWordRef = useRef(false)
 
   const currentWord = useMemo(() => words[wordIndex] ?? words[0], [wordIndex])
 
@@ -69,6 +75,7 @@ export function GameScene() {
   const SPEED_INITIAL = 0.09
   const SPEED_INCREMENT = 0.012
   const SPEED_MAX = 0.32
+  const SPEED_COMBO_DECREMENT = 0.024
   // --------------------
   const speedRef = useRef(SPEED_INITIAL)
   const rafRef = useRef(0)
@@ -78,6 +85,8 @@ export function GameScene() {
   const stateRef = useRef(state)
   const mistakeIndexRef = useRef(mistakeIndex)
   const castTimeoutRef = useRef(0)
+  // DEBUG
+  const debugSpeedRef = useRef(null)
 
   useEffect(() => {
     stateRef.current = state
@@ -96,6 +105,8 @@ export function GameScene() {
     setMonsterIndex(prev => (prev + 1) % MONSTER_COUNT)
     setTypedCount(0)
     setMistakeIndex(-1)
+    hadMistakeThisWordRef.current = false
+    setComboFlash(false)
     approach.set(0)
   }
 
@@ -133,6 +144,7 @@ export function GameScene() {
       } else {
         const now = performance.now()
         mistakeUntilRef.current = now + 220
+        hadMistakeThisWordRef.current = true
         setMistakeIndex(typedCount)
       }
     }
@@ -145,8 +157,20 @@ export function GameScene() {
     if (state !== 'playing') return
     if (typedCount !== currentWord.length) return
 
+    const clean = !hadMistakeThisWordRef.current
+    const newCombo = clean ? comboRef.current + 1 : 0
+    comboRef.current = newCombo
+
+    const isCombo = newCombo === COMBO_SIZE
+    if (isCombo) {
+      comboRef.current = 0
+      setComboFlash(true)
+      setTimeout(() => setComboFlash(false), 430)
+      speedRef.current = Math.max(speedRef.current - SPEED_COMBO_DECREMENT, SPEED_INITIAL)
+    }
+
     setState('casting')
-    setScore((s) => s + 160)
+    setScore((s) => s + (isCombo ? 320 : 160))
     const flashSrc = WORD_FLASHES[currentWord]
     if (flashSrc) {
       setWordFlashSrc(flashSrc)
@@ -176,6 +200,9 @@ export function GameScene() {
       const dt = Math.max(0, Math.min(0.05, (t - lastTRef.current) / 1000))
       lastTRef.current = t
 
+      // DEBUG
+      if (debugSpeedRef.current) debugSpeedRef.current.textContent = `speed: ${speedRef.current.toFixed(4)}`
+
       if (stateRef.current === 'playing') {
         const next = approach.get() + speedRef.current * dt
         approach.set(next)
@@ -185,6 +212,7 @@ export function GameScene() {
 
         if (next >= 1) {
           setState('gameover')
+          comboRef.current = 0
           setWhisper(GAME_OVER_WHISPERS[randomInt(GAME_OVER_WHISPERS.length)])
         }
       }
@@ -209,6 +237,33 @@ export function GameScene() {
     <div className="gameRoot">
       <SpellFlash visible={isCasting} />
       <WordFlash src={wordFlashSrc} />
+      {/* DEBUG */}
+      <div ref={debugSpeedRef} style={{ position: 'fixed', bottom: '50%', right: 200, fontSize: 16, zIndex: 999,color: 'rgba(132, 0, 121, 0.904)', backgroundColor: '#fff', fontFamily: 'monospace', zIndex: 999, pointerEvents: 'none' }} />
+
+      <AnimatePresence>
+        {comboFlash && (
+          <div key="combo-overlay" className="comboOverlay" aria-hidden>
+            <motion.div
+              className="comboOverlay__flash"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.28, 0] }}
+              transition={{ duration: 0.25, times: [0, 0.15, 1] }}
+            />
+            <motion.div
+              className="comboOverlay__text"
+              initial={{ scale: 0.55, opacity: 0 }}
+              animate={{
+                scale: [0.55, 1.28, 1.08, 1.08],
+                opacity: [0, 1, 1, 0],
+                rotate: [0, -2, 2, 0],
+              }}
+              transition={{ duration: 0.43, times: [0, 0.22, 0.48, 1] }}
+            >
+              COMBO ×{COMBO_SIZE}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <div className="gameStage" role="application" aria-label="Monster Type Game">
         {!isGameOver && <video className="gameBg" src={bgVideo} autoPlay loop muted playsInline />}
@@ -229,7 +284,6 @@ export function GameScene() {
               }}
             >
               <div className="monsterColumn__word">
-                {/* <p className="gameScene__prompt">Digite a palavra mágica antes do monstro chegar.</p> */}
                 <SpellWord word={currentWord} typedCount={typedCount} mistakeIndex={mistakeIndex} />
               </div>
               <Monster key={round} monsterIndex={monsterIndex} isDefeated={isCasting} />

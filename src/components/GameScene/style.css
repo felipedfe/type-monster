@@ -18,6 +18,36 @@
   white-space: nowrap;
 }
 
+.comboOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.comboOverlay__flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 200, 0, 1);
+  mix-blend-mode: screen;
+}
+
+.comboOverlay__text {
+  position: relative;
+  font-size: 100px;
+  font-weight: 900;
+  color: #FFD700;
+  text-transform: uppercase;
+  letter-spacing: -3px;
+  line-height: 1;
+  text-shadow:
+    0 0 30px rgba(255, 215, 0, 1),
+    0 0 80px rgba(255, 180, 0, 0.7);
+}
+
 .gameScene__prompt {
   margin: 0;
   font-size: 13px;

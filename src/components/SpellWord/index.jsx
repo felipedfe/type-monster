@@ -3,7 +3,10 @@ import './style.css'
 
 export function SpellWord({ word, typedCount, mistakeIndex }) {
   return (
-    <div className="spellWord" aria-label="palavra mágica">
+    <div
+      className="spellWord"
+      aria-label="palavra mágica"
+    >
       {word.split('').map((ch, idx) => {
         const state =
           idx < typedCount ? 'correct' : idx === mistakeIndex ? 'wrong' : 'pending'
