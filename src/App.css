@@ -32,10 +32,10 @@
 .gameStage {
   position: relative;
   isolation: isolate;
-  width: min(1100px, 100%);
+  width: min(1500px, 100%);
   margin: 0 auto;
   /* min-height: 100svh; */
-  max-height: 750px;
+  max-height: 850px;
   top: 50%;
   transform: translateY(-50%);
   /* padding: 22px 20px 28px; */

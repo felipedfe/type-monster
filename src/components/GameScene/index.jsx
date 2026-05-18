@@ -7,6 +7,7 @@ import { SpellFlash } from '../SpellFlash'
 import { SpellWord } from '../SpellWord'
 import { WizardHands } from '../WizardHands'
 import bgVideo from '../../assets/fundo5-low.mp4'
+// import bgMusic from '../../assets/fundo-type-doom.ogg'
 import smileImg from '../../assets/smile.png'
 import pandaImg from '../../assets/panda.png'
 import { WordFlash } from '../WordFlash'
@@ -85,6 +86,7 @@ export function GameScene() {
   const stateRef = useRef(state)
   const mistakeIndexRef = useRef(mistakeIndex)
   const castTimeoutRef = useRef(0)
+  // const audioRef = useRef(null)
   // DEBUG
   const debugSpeedRef = useRef(null)
 
@@ -117,6 +119,28 @@ export function GameScene() {
       window.clearTimeout(castTimeoutRef.current)
     }
   }, [])
+
+  // useEffect(() => {
+  //   const audio = new Audio(bgMusic)
+  //   audio.loop = true
+  //   audio.volume = 0.5
+  //   audioRef.current = audio
+
+  //   const startAudio = () => {
+  //     audio.play().catch(() => {})
+  //     window.removeEventListener('keydown', startAudio)
+  //   }
+
+  //   audio.play().catch(() => {
+  //     window.addEventListener('keydown', startAudio)
+  //   })
+
+  //   return () => {
+  //     window.removeEventListener('keydown', startAudio)
+  //     audio.pause()
+  //     audio.src = ''
+  //   }
+  // }, [])
 
   useEffect(() => {
     function onKeyDown(e) {
@@ -165,7 +189,7 @@ export function GameScene() {
     if (isCombo) {
       comboRef.current = 0
       setComboFlash(true)
-      setTimeout(() => setComboFlash(false), 430)
+      setTimeout(() => setComboFlash(false), 1600)
       speedRef.current = Math.max(speedRef.current - SPEED_COMBO_DECREMENT, SPEED_INITIAL)
     }
 
@@ -238,7 +262,7 @@ export function GameScene() {
       <SpellFlash visible={isCasting} />
       <WordFlash src={wordFlashSrc} />
       {/* DEBUG */}
-      <div ref={debugSpeedRef} style={{ position: 'fixed', bottom: '50%', right: 200, fontSize: 16, zIndex: 999,color: 'rgba(132, 0, 121, 0.904)', backgroundColor: '#fff', fontFamily: 'monospace', zIndex: 999, pointerEvents: 'none' }} />
+      {/* <div ref={debugSpeedRef} style={{ position: 'fixed', bottom: '50%', right: 200, fontSize: 16, zIndex: 999,color: 'rgba(132, 0, 121, 0.904)', backgroundColor: '#fff', fontFamily: 'monospace', zIndex: 999, pointerEvents: 'none' }} /> */}
 
       <AnimatePresence>
         {comboFlash && (
@@ -253,11 +277,12 @@ export function GameScene() {
               className="comboOverlay__text"
               initial={{ scale: 0.55, opacity: 0 }}
               animate={{
-                scale: [0.55, 1.28, 1.08, 1.08],
-                opacity: [0, 1, 1, 0],
-                rotate: [0, -2, 2, 0],
+                scale: [0.55, 1.28, 1.08],
+                opacity: [0, 1, 1],
+                rotate: [0, -2, 0],
               }}
-              transition={{ duration: 0.43, times: [0, 0.22, 0.48, 1] }}
+              exit={{ opacity: 0, transition: { duration: 0.5 } }}
+              transition={{ duration: 0.35, times: [0, 0.35, 1] }}
             >
               COMBO ×{COMBO_SIZE}
             </motion.div>
